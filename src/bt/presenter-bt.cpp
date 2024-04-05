@@ -35,7 +35,7 @@
  *
  */
 
-#define BTSTACK_FILE__ "hid_keyboard_demo.c"
+#define BTSTACK_FILE__ "presenter-bt.cpp"
  
 // *****************************************************************************
 /* EXAMPLE_START(hid_keyboard_demo): HID Keyboard Classic
@@ -54,6 +54,9 @@
 #include <inttypes.h>
 
 #include "btstack.h"
+
+#include "pico/stdlib.h"
+#include "pico/cyw43_arch.h"
 
 #ifdef HAVE_BTSTACK_STDIN
 #include "btstack_stdin.h"

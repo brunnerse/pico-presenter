@@ -3,8 +3,8 @@ set(PROJECT_NAME pico-presenter)
 cmake_minimum_required(VERSION 3.12)
 
 
-set(BUILD_BT_VERSION false)
-set(BT_USE_BLE false)
+set(BUILD_BT_VERSION true)
+set(BT_USE_BLE true)
 
 set(PICO_BOARD "pico_w")
 
@@ -49,7 +49,9 @@ if(${PICO_BOARD} STREQUAL "pico_w")
 	# Create presenter-usb executable
 	add_executable(presenter-bt
 		src/presenter.hpp
-        	src/bt/presenter-bt.cpp
+#        	src/bt/presenter-bt.cpp
+		src/bt/server.c
+		src/bt/server_common.c
 	)
 	
 	# Not a must 
@@ -62,7 +64,9 @@ if(${PICO_BOARD} STREQUAL "pico_w")
 		target_link_libraries(presenter-bt
 	        	pico_stdlib
 			pico_btstack_ble
-			#pico_cyw43_arch_none
+			pico_btstack_cyw43 #TODO some of these unnecessary?
+			pico_cyw43_arch_none
+			hardware_adc
 		)
 	else()
 		target_link_libraries(presenter-bt
