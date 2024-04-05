@@ -26,14 +26,18 @@ pico_sdk_init()
 # Create presenter-usb executable
 add_executable(presenter-usb
 	src/presenter.hpp
-        src/presenter-usb.cpp
+        src/usb/presenter-usb.cpp
+	src/usb/usb_descriptors.c
 )
 
-#TODO maybe not possible
-pico_enable_stdio_usb(presenter-usb 1)
-
+target_include_directories(presenter-usb PRIVATE
+	${CMAKE_CURRENT_LIST_DIR}/src/usb #For tinyusb config
+)
 target_link_libraries(presenter-usb
         pico_stdlib
+	pico_unique_id
+	tinyusb_device
+	tinyusb_board
 )
 
 pico_add_extra_outputs(presenter-usb)
@@ -45,14 +49,14 @@ if(${PICO_BOARD} STREQUAL "pico_w")
 	# Create presenter-usb executable
 	add_executable(presenter-bt
 		src/presenter.hpp
-        	src/presenter-bt.cpp
+        	src/bt/presenter-bt.cpp
 	)
 	
 	# Not a must 
 	pico_enable_stdio_usb(presenter-bt 1)
 	
 	target_include_directories(presenter-bt PRIVATE
-		${CMAKE_CURRENT_LIST_DIR}/src # For btstack config
+		${CMAKE_CURRENT_LIST_DIR}/src/bt # For btstack config
 	)
 	if (${BT_USE_BLE})
 		target_link_libraries(presenter-bt
